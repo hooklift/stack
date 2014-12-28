@@ -11,9 +11,9 @@ rootfs:
 	@echo "$(OK_COLOR)------> Exporting rootfs...$(NO_COLOR)"
 	docker export $(NAME)-build > hooklift-$(NAME).tar
 	@echo "$(OK_COLOR)------> Compressing rootfs...$(NO_COLOR)"
-	gzip -9 -c hooklift-$(NAME).tar > hooklift-$(NAME)-v$(VERSION).tar.gz
+	gzip -c hooklift-$(NAME).tar > hooklift-$(NAME)-v$(VERSION).tar.gz
 	rm -rf hooklift-$(NAME).tar
 	docker stop $(NAME)-build
 	docker rm $(NAME)-build
-	docker rmi hooklift/$(NAME)
+	@#docker rmi hooklift/$(NAME)
 	@echo "$(OK_COLOR)-----> Done$(NO_COLOR)"
