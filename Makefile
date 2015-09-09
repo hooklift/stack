@@ -1,15 +1,15 @@
-NAME 		:= stack
-VERSION 	:= v1.0.0
-OK_COLOR 	:= \x1b[32;01m
-NO_COLOR    	:= \x1b[0m
+NAME		:= stack
+VERSION		:= v1.0.1
+OK_COLOR	:= \x1b[32;01m
+NO_COLOR	:= \x1b[0m
 
 stack:
 	rm -rf dist && mkdir dist
 	@echo "$(OK_COLOR)------> Building Hooklift stack image...$(NO_COLOR)"
 	docker build --force-rm=true -t hooklift/$(NAME) .
-	@echo "$(OK_COLOR)------> Running image so that we can export it...$(NO_COLOR)"
+	@echo "$(OK_COLOR)------> Running image so we can export it...$(NO_COLOR)"
 	docker run --name $(NAME)-build -e DEBIAN_FRONTEND=noninteractive hooklift/$(NAME)
-	@echo "$(OK_COLOR)------> Exporting stack...$(NO_COLOR)"
+	@echo "$(OK_COLOR)------> Exporting rootfs...$(NO_COLOR)"
 	docker export $(NAME)-build > dist/hooklift-$(NAME).tar
 	@echo "$(OK_COLOR)------> Compressing rootfs...$(NO_COLOR)"
 	gzip -c dist/hooklift-$(NAME).tar > dist/hooklift-$(NAME)-$(VERSION).tar.gz
