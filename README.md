@@ -1,11 +1,12 @@
-# Hooklift Runtime Stack
-This is the rootfs used by all containers managed by Hooklift. It is based on Heroku's Cedar14 stack.
+# Hooklift Runtime Stacks
+Officially supported root filesystems used by all containers managed by Hooklift.
 
 # Prerequisites
 * Docker machine
 * Docker
 
 # Building and releasing
-* `make stack`: Uses Docker to provision and runs `docker export` to capture the rootfs.
-
+* `make build`: Builds all the stacks
+* `make cedar14`: Builds Heroku's cedar-14 stack
+* `make lift16`: Builds Hooklift's stack
 * `make release`: Uploads any distributable artifacts up to project's github releases.

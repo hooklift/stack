@@ -1,22 +1,17 @@
-NAME		:= stack
-VERSION		:= v1.0.1
 OK_COLOR	:= \x1b[32;01m
 NO_COLOR	:= \x1b[0m
 
-stack:
-	rm -rf dist && mkdir dist
-	@echo "$(OK_COLOR)------> Building Hooklift stack image...$(NO_COLOR)"
-	docker build --force-rm=true -t hooklift/$(NAME) .
-	@echo "$(OK_COLOR)------> Running image so we can export it...$(NO_COLOR)"
-	docker run --name $(NAME)-build -e DEBIAN_FRONTEND=noninteractive hooklift/$(NAME)
-	@echo "$(OK_COLOR)------> Exporting rootfs...$(NO_COLOR)"
-	docker export $(NAME)-build > dist/hooklift-$(NAME).tar
-	@echo "$(OK_COLOR)------> Compressing rootfs...$(NO_COLOR)"
-	gzip -c dist/hooklift-$(NAME).tar > dist/hooklift-$(NAME)-$(VERSION).tar.gz
-	rm -rf dist/hooklift-$(NAME).tar
-	docker stop $(NAME)-build
-	docker rm $(NAME)-build
-	@#docker rmi hooklift/$(NAME)
+STACKS=cedar-14 lift-16
+VERSION=v1.1.0
+
+build:
+	@$(foreach C, $(STACKS), $(MAKE) -C $(C) build &&) echo done
+
+cedar14:
+	@$(MAKE) -C cedar-14 build
+
+lift16:
+	@$(MAKE) -C lift-16 build
 
 deps:
 	go get -u github.com/c4milo/github-release/...
@@ -29,12 +24,12 @@ digest:
 		echo $$f; \
 	done
 
-release: stack digest
+release: build digest
 	@latest_tag=$$(git describe --tags `git rev-list --tags --max-count=1`); \
 	comparison="$$latest_tag..HEAD"; \
 	if [ -z "$$latest_tag" ]; then comparison=""; fi; \
 	changelog=$$(git log $$comparison --oneline --no-merges --reverse); \
-	github-release hooklift/$(NAME) $(VERSION) "$$(git rev-parse --abbrev-ref HEAD)" "**Changelog**<br/>$$changelog" 'dist/*'; \
+	github-release hooklift/stack $(VERSION) "$$(git rev-parse --abbrev-ref HEAD)" "**Changelog**<br/>$$changelog" 'dist/*'; \
 	git pull
 
-.PHONY: deps release stack digest
+.PHONY: deps release build digest cedar14 lift16
