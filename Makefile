@@ -2,7 +2,7 @@ OK_COLOR	:= \x1b[32;01m
 NO_COLOR	:= \x1b[0m
 
 STACKS=cedar-14 lift-16
-VERSION=v1.1.1
+VERSION=v1.1.3
 
 build:
 	@$(foreach C, $(STACKS), $(MAKE) -C $(C) build &&) echo done
@@ -18,7 +18,7 @@ deps:
 
 digest:
 	@echo "$(OK_COLOR)-----> Generating SHA512 digest...$(NO_COLOR)"
-	$(eval FILES := $(shell ls dist/*.tar.gz))
+	$(eval FILES := $(shell ls dist))
 	@for f in $(FILES); do \
 		(cd $(shell pwd)/dist && shasum -a 512 $$f > $$f.sha512); \
 		echo $$f; \
