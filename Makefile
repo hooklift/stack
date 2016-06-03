@@ -2,7 +2,7 @@ OK_COLOR	:= \x1b[32;01m
 NO_COLOR	:= \x1b[0m
 
 STACKS=cedar-14 lift-16
-VERSION=v1.1.0
+VERSION=v1.1.1
 
 build:
 	@$(foreach C, $(STACKS), $(MAKE) -C $(C) build &&) echo done
