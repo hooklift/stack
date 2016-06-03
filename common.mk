@@ -4,7 +4,7 @@ PACKAGE		:= hooklift-$(NAME)-$(VERSION).tar.gz
 DIST		:= ../dist
 
 build:
-	rm -rf $(DIST) && mkdir -p $(DIST)
+	rm -rf $(DIST)/$(PACKAGE)*
 	@echo "$(OK_COLOR)------> Building Hooklift $(NAME) image...$(NO_COLOR)"
 	docker build --force-rm=true -t hooklift/$(NAME) .
 	@echo "$(OK_COLOR)------> Running image so we can export it...$(NO_COLOR)"

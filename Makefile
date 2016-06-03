@@ -18,7 +18,7 @@ deps:
 
 digest:
 	@echo "$(OK_COLOR)-----> Generating SHA512 digest...$(NO_COLOR)"
-	$(eval FILES := $(shell ls dist))
+	$(eval FILES := $(shell ls dist/*.tar.gz))
 	@for f in $(FILES); do \
 		(cd $(shell pwd)/dist && shasum -a 512 $$f > $$f.sha512); \
 		echo $$f; \
